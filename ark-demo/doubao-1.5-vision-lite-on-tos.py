@@ -23,6 +23,7 @@ response = client.chat.completions.create(
                     "type": "image_url",
                     "image_url": {
                         "url": "https://test-cluster-beijing.tos-cn-beijing.volces.com/demofiles/pics/2.jpg?X-Tos-Algorithm=xxxxxxxxxx"
+                        # TODO 能否通过 trn/arn 的方式来调用 iam 授权 ark 访问指定tos，从而避免走 pre_sign
                     },
                 },
                 {"type": "text", "text": "这是什么车？"},
