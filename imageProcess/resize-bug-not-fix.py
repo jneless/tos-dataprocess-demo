@@ -16,13 +16,18 @@ region = "cn-beijing"
 bucket_name = "test-cluster-beijing"
 image_key = "demofiles/pics/2.jpg"
 style = "x-tos-process=image/resize,l_40&x-tos-save-object=MS1vdXRwdXQucG5n"
+# SDK 当前有bug，跟 Postman 行为不一致
+# style = "x-tos-process=image/resize,l_480"
 
 try:
     # 创建 TosClientV2 对象，对桶和对象的操作都通过 TosClientV2 实现。
     client = tos.TosClientV2(ak, sk, endpoint, region)
     object_stream = client.get_object(bucket=bucket_name, key=image_key, process=style)
-    callback_msg = json.load(object_stream)
-    print(callback_msg)
+    print(object_stream.read())
+
+    # postman 返回 json，此处SDK未生效之前，会返回图片，故json load 会报错 "fail with unknown error: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte"
+    # callback_msg = json.load(object_stream)
+    # print(callback_msg)
 
 except tos.exceptions.TosClientError as e:
     # 操作失败，捕获客户端异常，一般情况为非法请求参数或网络异常。
